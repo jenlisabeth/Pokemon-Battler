@@ -11,12 +11,13 @@ class player {
 	}
 
 	async init(pokemons, isEnemy) {
-		for (var i = 0; i < 6; i++) {
+		const promises = [...Array(6).keys()].map(async(x) => {
 			var poke = new pokemon("");
 			poke = await getPokemonDetails(pokemons[int(random(0, pokemons.length))], isEnemy);
 			poke.isEnemy = isEnemy;
 			this.party.push(poke);
-		}
+		});
+		await Promise.all(promises);
 		this.currentPokemon = this.party[0];
 		this.currentPokemon.update();
 	}
