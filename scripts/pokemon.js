@@ -51,17 +51,17 @@ class pokemon {
 			this.image = createImg(this.imageName + ".gif");
 			this.image.hide();
 		}else{
-			var imgX = (posX - (this.image.width/2)) + (windowWidth - canvas.width) / 2
-			var imgY = (posY - this.image.height) + (windowHeight - height) / 2
-			this.image.position(imgX, imgY)
 			if(this.image.width > 0 && this.image.height > 0 && this.image.elt.style.display === 'none' && isReady)
 			{
+				this.image.show();
 				this.origWidth = this.image.width;
 				this.origHeight = this.image.height;
 				this.ratio = this.image.height / this.image.width;
 				this.updateImage();
-				this.image.show();
-			}		
+			}
+			var imgX = (posX - (this.image.width/2)) + (windowWidth - canvas.width) / 2
+			var imgY = (posY - this.image.height) + (windowHeight - height) / 2
+			this.image.position(imgX, imgY)		
 		}
 	}
 
