@@ -159,42 +159,44 @@ function draw() {
 	}
 
 	if(Trainer.currentPokemon.image != null && Enemy.currentPokemon.image != null ){
+		isReady = true
+
+    	push()
+
+    	fill(177,175,144)
+    	stroke(200,199,175)
+    	strokeWeight(0.018*width)
+    	ellipse(0.731*width, 0.378*height, 0.504*width, 0.17*height)
+    	ellipse(0.27*width, 0.675*height, 0.504*width, 0.17*height)
+
+    	fill(65,64,73)
+    	noStroke()
+    	rect(0,0.697*height,1.001*width,0.305*height)
+
+    	fill(87,145,152)
+    	stroke(208,80,49)
+    	strokeWeight(0.007*width)
+    	rect(0.007*width, 0.721*height, 0.987*width, 0.254*height, 0.018*width)
+
 		if(Trainer.currentPokemon.image.width > 0 && Enemy.currentPokemon.image.width > 0){
-			isReady = true
-			
-    		push()
-
-    		fill(177,175,144)
-    		stroke(200,199,175)
-    		strokeWeight(0.018*width)
-    		ellipse(0.731*width, 0.378*height, 0.504*width, 0.17*height)
-    		ellipse(0.27*width, 0.675*height, 0.504*width, 0.17*height)
-
-    		fill(65,64,73)
-    		noStroke()
-    		rect(0,0.697*height,1.001*width,0.305*height)
-
-    		fill(87,145,152)
-    		stroke(208,80,49)
-    		strokeWeight(0.007*width)
-    		rect(0.007*width, 0.721*height, 0.987*width, 0.254*height, 0.018*width)
-
 	    	Trainer.currentPokemon.draw(0.261*width, 0.675*height, true)
-	    	Enemy.currentPokemon.draw(0.738*width, 0.405*height, true)
-
-			EnemyBattleBox(new p5.Vector(0.057*width, 0.027*height), Enemy.currentPokemon)
-			PlayerBattleBox(new p5.Vector(0.569*width, 0.462*height), Trainer.currentPokemon)
-
-			if (playerTurn) {
-				Trainer.update()
-			}else{
-				Enemy.update()
-			}
-
-			pop()
+			Enemy.currentPokemon.draw(0.738*width, 0.405*height, true)
 		}else{
+			fill(0,0,0)
+			noStroke()
 			text("Loading images...", width/2 - (textWidth("Loading images...")/2), height/2)
 		}
+
+		EnemyBattleBox(new p5.Vector(0.057*width, 0.027*height), Enemy.currentPokemon)
+		PlayerBattleBox(new p5.Vector(0.569*width, 0.462*height), Trainer.currentPokemon)
+
+		if (playerTurn) {
+			Trainer.update()
+		}else{
+			Enemy.update()
+		}
+
+		pop()
 	}else{
 		text("Generating pokemons...", width/2 - (textWidth("Generating pokemons...")/2), height/2)
 	}
