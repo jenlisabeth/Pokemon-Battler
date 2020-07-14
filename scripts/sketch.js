@@ -42,7 +42,11 @@ async function preload(){
 }
 
 async function setup() {
-	canvas = createCanvas(555, 370);
+	var maxSize = windowWidth/2;
+	canvas = createCanvas(maxSize, (2/3) * maxSize);
+	var x = (windowWidth - width) / 2;
+  	var y = (windowHeight - height) / 2;
+	canvas.position(x, y, 'fixed');
 	frameRate(60);
 	smooth();
 }
