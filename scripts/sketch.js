@@ -184,7 +184,7 @@ function draw() {
 		}else{
 			fill(0,0,0)
 			noStroke()
-			text("Loading images...", width/2 - (textWidth("Loading images...")/2), height/2)
+			text("Loading images...", width/2 - (textWidth("Loading images...")/2), height/3)
 		}
 
 		EnemyBattleBox(new p5.Vector(0.057*width, 0.027*height), Enemy.currentPokemon)

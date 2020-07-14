@@ -12,8 +12,7 @@ class player {
 
 	async init(pokemons, isEnemy) {
 		const promises = [...Array(6).keys()].map(async(x) => {
-			var poke = new pokemon("");
-			poke = await getPokemonDetails(pokemons[int(random(0, pokemons.length))], isEnemy);
+			var poke = await getPokemonDetails(pokemons[int(random(0, pokemons.length))], isEnemy);
 			poke.isEnemy = isEnemy;
 			this.party.push(poke);
 		});
@@ -40,7 +39,7 @@ class player {
 		}
 		if(this.currentPokemon.isEnemy && this.currentPokemon.isChoosing) {
 			var movesList = this.currentPokemon.attacks.filter((move) => {
-    					return move.PPd !== '0'
+    					return move.PP !== '0'
 			})
 			var randomMove = int(random(movesList.length));
 			this.currentPokemon.attack = movesList[randomMove];
