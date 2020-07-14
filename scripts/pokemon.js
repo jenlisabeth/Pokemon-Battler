@@ -8,6 +8,7 @@ class pokemon {
 			this.name = iname.toUpperCase().split('-')[0]
 		}
 
+		this.origWidth, this.origHeight, this.ratio = 0;
 		this.isEnemy = false
 		this.IV = random(0, 15)
 		this.EV = 10 
@@ -50,11 +51,25 @@ class pokemon {
 			this.image = createImg(this.imageName + ".gif");
 			this.image.hide();
 		}else{
-			this.image.position(posX - (this.image.width/2), posY - this.image.height)
+			var imgX = (posX - (this.image.width/2)) + (windowWidth - canvas.width) / 2
+			var imgY = (posY - this.image.height) + (windowHeight - height) / 2
+			this.image.position(imgX, imgY)
 			if(this.image.width > 0 && this.image.height > 0 && this.image.elt.style.display === 'none' && isReady)
 			{
 				this.image.show();
-			}			
+				this.origWidth = this.image.width;
+				this.origHeight = this.image.height;
+				this.ratio = this.image.height / this.image.width;
+				this.updateImage();
+			}		
+		}
+	}
+
+	updateImage() {
+		if (this.ratio > 0) {
+			var imgWidth = (this.origWidth / 400) * canvas.width;
+			var imgHeight = this.ratio * imgWidth;
+			this.image.size(imgWidth, imgHeight)
 		}
 	}
 

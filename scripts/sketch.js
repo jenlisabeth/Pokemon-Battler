@@ -2,10 +2,10 @@
 
 new p5();
 
+var canvas = null;
+
 var showFps = true;
-
 var isReady = false;
-
 var playerTurn = true;
 
 var Trainer = new player("Trainer");
@@ -42,8 +42,19 @@ async function preload(){
 }
 
 async function setup() {
-	createCanvas(556, 371)
+	canvas = createCanvas(555, 370);
 	frameRate(60);
+	smooth();
+}
+
+function windowResized() {
+	var maxSize = windowWidth/2;
+	resizeCanvas(maxSize, (2/3) * maxSize);
+	var x = (windowWidth - width) / 2;
+  	var y = (windowHeight - height) / 2;
+	canvas.position(x, y, 'fixed');
+	Trainer.currentPokemon.updateImage()
+	Enemy.currentPokemon.updateImage()
 }
 
 function keyPressed(){
@@ -116,8 +127,8 @@ function draw() {
 		textFont("pkNormalFont")
 		fill(0,255,0)
 		stroke(0,0,0)
-		textSize(30)
-    	text(int(fixedFps), width - 30, 30)
+		textSize(0.054*width)
+    	text(int(fixedFps), width - 0.054*width, 0.081*height)
     	pop()
 	}
 
@@ -151,24 +162,24 @@ function draw() {
 
     		fill(177,175,144)
     		stroke(200,199,175)
-    		strokeWeight(10)
-    		ellipse(406,140,280,63)
-    		ellipse(150,250,280,63)
+    		strokeWeight(0.018*width)
+    		ellipse(0.731*width, 0.378*height, 0.504*width, 0.17*height)
+    		ellipse(0.27*width, 0.675*height, 0.504*width, 0.17*height)
 
     		fill(65,64,73)
     		noStroke()
-    		rect(0,258,556,113)
+    		rect(0,0.697*height,1.001*width,0.305*height)
 
     		fill(87,145,152)
     		stroke(208,80,49)
-    		strokeWeight(4)
-    		rect(4,267,548,94,10)
+    		strokeWeight(0.007*width)
+    		rect(0.007*width, 0.721*height, 0.987*width, 0.254*height, 0.018*width)
 
-	    	Trainer.currentPokemon.draw(145,250, true)
-	    	Enemy.currentPokemon.draw(410,150, true)
+	    	Trainer.currentPokemon.draw(0.261*width, 0.675*height, true)
+	    	Enemy.currentPokemon.draw(0.738*width, 0.405*height, true)
 
-			EnemyBattleBox(new p5.Vector(32,10), Enemy.currentPokemon)
-			PlayerBattleBox(new p5.Vector(316,171), Trainer.currentPokemon)
+			EnemyBattleBox(new p5.Vector(0.057*width, 0.027*height), Enemy.currentPokemon)
+			PlayerBattleBox(new p5.Vector(0.569*width, 0.462*height), Trainer.currentPokemon)
 
 			if (playerTurn) {
 				Trainer.update()
@@ -189,7 +200,16 @@ function EnemyBattleBox(pos, pokemon){
 	push()
 	noStroke()
 	fill(64,63,81)
-	quad(pos.x+25,pos.y+64,pos.x+8,pos.y+44,pos.x+211,pos.y+47,pos.x+230,pos.y+64)
+	quad(
+		pos.x+0.045*width,
+		pos.y+0.172*height,
+		pos.x+0.014*width,
+		pos.y+0.118*height,
+		pos.x+0.380*width,
+		pos.y+0.127*height,
+		pos.x+0.414*width,
+		pos.y+0.172*height
+	)
 
 	BattleBox(pos, (100/pokemon.maxHealth)*pokemon.health, pokemon.name, pokemon.level)
 	pop()
@@ -199,127 +219,136 @@ function PlayerBattleBox(pos, pokemon){
 	push()
 	noStroke()
 	fill(64,63,81)
-	quad(pos.x-20,pos.y+83,pos.x,pos.y+60,pos.x+211,pos.y+63,pos.x+200,pos.y+83)
-	rect(pos.x,pos.y+48,208,35)
-	rect(pos.x,pos.y+41,213,40)
-	rect(pos.x,pos.y+41,216,37)
-	rect(pos.x,pos.y+41,218,33)
-	BattleBox(pos, (100/pokemon.maxHealth)*pokemon.health, pokemon.name, pokemon.level, 16)
+	quad(
+		pos.x-0.036*width,
+		pos.y+0.224*height,
+		pos.x,
+		pos.y+0.162*height,
+		pos.x+0.380*width,
+		pos.y+0.170*height,
+		pos.x+0.380*width,
+		pos.y+0.224*height
+	)
+	rect(pos.x,pos.y+0.129*height,0.374*width,0.094*height)
+	rect(pos.x,pos.y+0.110*height,0.383*width,0.108*height)
+	rect(pos.x,pos.y+0.110*height,0.389*width,0.1*height)
+	rect(pos.x,pos.y+0.110*height,0.392*width,0.089*height)
+	BattleBox(pos, (100/pokemon.maxHealth)*pokemon.health, pokemon.name, pokemon.level, 0.043*height)
 	
 	textFont("pkNormalFont")
 	fill(0,0,0)
-	textSize(18)
-	text("/",pos.x+163,pos.y+65)
-	text(int(pokemon.health), pos.x+135, pos.y+65)
-	text(pokemon.maxHealth, pos.x+175, pos.y+65)
+	textSize(0.032*width)
+	text("/",pos.x+0.293*width,pos.y+0.175*height)
+	text(int(pokemon.health), pos.x+0.243*width, pos.y+0.175*height)
+	text(pokemon.maxHealth, pos.x+0.315*width, pos.y+0.175*height)
 
 	fill(232,204,13)
-	textSize(9)
+	textSize(0.016*width)
 	textFont("pkThiccFont")
-	text("E",pos.x+20,pos.y+81)
-	text("X",pos.x+28,pos.y+81)
-	text("P",pos.x+36,pos.y+81)
+	text("E",pos.x+0.036*width,pos.y+0.218*height)
+	text("X",pos.x+0.050*width,pos.y+0.218*height)
+	text("P",pos.x+0.064*width,pos.y+0.218*height)
 
 	fill(150,140,87)
-	rect(pos.x+52,pos.y+74,151,7)
+	rect(pos.x+0.093*width,pos.y+0.2*height,0.272*width,0.018*height)
 	fill(203,191,136)
-	for (var i = 53; i < 200; i += 5) {
-		rect(pos.x+i,pos.y+75,4,5)
+	for (var i = 0.095*width; i < 0.360*width; i += 0.009*width) {
+		rect(pos.x+i,pos.y+0.202*height,0.007*width,0.013*height)
 	}
 
 	fill(0,128,255,100)
-	rect(pos.x+52,pos.y+74,(151/pokemon.maxExp)*pokemon.exp,7)
+	rect(pos.x+0.093*width,pos.y+0.2*height,((0.272*width)/pokemon.maxExp)*pokemon.exp,0.018*height)
 
 	pop()
 }
 
 function EndText(trainerName){
 	push()
-	textSize(35)
+	textSize(0.063*width)
 	textFont("pkNormalFont")
-	strokeWeight(2)
+	strokeWeight(0.003*width)
 	stroke(34, 35, 85)
 	fill(34, 35, 85)
-	text(trainerName + " paid his loss.", 27, 312)
+	text(trainerName + " paid his loss.", 0.048*width, 0.843*height)
 	fill(255,255,255)
 	noStroke()
-	text(trainerName + " blacked out!", 25, 310)
-	text("!", textWidth(trainerName + " blacked out!") + 25,  345)
+	text(trainerName + " blacked out!", 0.045*width, 0.837*height)
+	text("!", textWidth(trainerName + " blacked out!") + 0.045*width, 0.932*height)
 	pop()
 }
 
 function BattleText(currPkmn, attackName){
 	push()
-	textSize(35)
+	textSize(0.063*width)
 	textFont("pkNormalFont")
-	strokeWeight(2)
+	strokeWeight(0.003*width)
 	stroke(34, 35, 85)
 	fill(34, 35, 85)
 	if(currPkmn.isEnemy)
 	{
-		text("Foe " + currPkmn.name + " used", 27, 312)
-		text(attackName, 27, 347)
-		text("!", textWidth(attackName) + 27,  347)
+		text("Foe " + currPkmn.name + " used", 0.048*width, 0.843*height)
+		text(attackName, 0.048*width, 0.937*height)
+		text("!", textWidth(attackName) + 0.048*width,  0.937*height)
 		fill(255,255,255)
 		noStroke()
-		text("Foe " + currPkmn.name + " used", 25, 310)
-		text(attackName, 25, 345)
-		text("!", textWidth(attackName) + 25,  345)
+		text("Foe " + currPkmn.name + " used", 0.045*width, 0.837*height)
+		text(attackName, 0.045*width, 0.932*height)
+		text("!", textWidth(attackName) + 0.045*width,  0.932*height)
 	}
 	else
 	{
-		text(currPkmn.name + " used", 27, 312)
-		text(attackName, 27, 347)
-		text("!", textWidth(attackName) + 27,  347)
+		text(currPkmn.name + " used", 0.048*width, 0.843*height)
+		text(attackName, 0.048*width, 0.937*height)
+		text("!", textWidth(attackName) + 0.048*width,  0.937*height)
 		fill(255,255,255)
 		noStroke()
-		text(currPkmn.name + " used", 25, 310)
-		text(attackName, 25, 345)
-		text("!", textWidth(attackName) + 25,  345)
+		text(currPkmn.name + " used", 0.045*width, 0.837*height)
+		text(attackName, 0.045*width, 0.932*height)
+		text("!", textWidth(attackName) + 0.045*width,  0.932*height)
 	}
 	pop()
 }
 
 function ChoiceBox(pokemon){
 
-	BevelBox(300,264,257,104)
+	BevelBox(0.540*width,0.713*height,0.463*width,0.281*height)
 
 	push()
 	
 	textFont("pkNormalFont")
-	textSize(35)
-	strokeWeight(2)
+	textSize(0.063*width)
+	strokeWeight(0.003*width)
 	stroke(34, 35, 85)
 	fill(34, 35, 85)
 
-	text("What should", 27, 311)
-	text(pokemon.name + " do", 27, 346)
-	text("?", textWidth(pokemon.name + " do") + 27,  346)
+	text("What should", 0.048*width, 0.840*height)
+	text(pokemon.name + " do", 0.048*width, 0.935*height)
+	text("?", textWidth(pokemon.name + " do") + 0.048*width,  0.935*height)
 	fill(255,255,255)
 	noStroke()
-	text("What should", 25, 310)
-	text(pokemon.name + " do", 25, 345)
-	text("?", textWidth(pokemon.name + " do") + 25,  345)
+	text("What should", 0.045*width, 0.837*height)
+	text(pokemon.name + " do", 0.045*width, 0.932*height)
+	text("?", textWidth(pokemon.name + " do") + 0.045*width,  0.932*height)
 
 	fill(0,0,0)
-	textSize(32)
-	text("FIGHT", 322, 310)
-	text("BAG", 435, 310)
-	text("POKéMON", 322, 345)
-	text("RUN", 435, 345)
+	textSize(0.057*width)
+	text("FIGHT", 0.580*width, 0.837*height)
+	text("BAG", 0.783*width, 0.837*height)
+	text("POKéMON", 0.580*width, 0.932*height)
+	text("RUN", 0.783*width, 0.932*height)
 
 	switch(POSITION[pokemon.selected]){
 		case 'LT':
-			selectBox(322, 310, 107)
+			selectBox(0.580*width, 0.837*height, 0.192*width)
 			break;
 		case 'LB':
-			selectBox(322, 345, 107)
+			selectBox(0.580*width, 0.932*height, 0.192*width)
 			break;
 		case 'RT':
-			selectBox(435, 310, 107)
+			selectBox(0.783*width, 0.837*height, 0.192*width)
 			break;
 		case 'RB':
-			selectBox(435, 345, 107)
+			selectBox(0.783*width, 0.932*height, 0.192*width)
 			break;
 	}
 
@@ -328,60 +357,60 @@ function ChoiceBox(pokemon){
 
 function BattleChoiceBox(pokemon){
 
-	BevelBox(406,264,151,104)
+	BevelBox(0.731*width,0.713*height,0.272*width,0.281*height)
 
-	BevelBox(2,264,405,104)
+	BevelBox(0.003*width,0.713*height,0.729*width,0.281*height)
 
 	push()
 	
 	textFont("pkNormalFont")
 	noStroke()
 	fill(0,0,0)
-	textSize(32)
+	textSize(0.057*width)
 	switch(POSITION[pokemon.selected]){
 		case 'LT':
-			selectBox(20, 310, 174)
+			selectBox(0.036*width, 0.837*height, 0.313*width)
 			if(pokemon.attacks[0])
 				pokemon.attack = pokemon.attacks[0]
 			break;
 		case 'LB':
-			selectBox(20, 345, 174)
+			selectBox(0.036*width, 0.932*height, 0.313*width)
 			if(pokemon.attacks[2])
 				pokemon.attack = pokemon.attacks[2]
 			break;
 		case 'RT':
-			selectBox(200, 310, 174)
+			selectBox(0.360*width, 0.837*height, 0.313*width)
 			if(pokemon.attacks[1])
 				pokemon.attack = pokemon.attacks[1]
 			break;
 		case 'RB':
-			selectBox(200, 345, 174)
+			selectBox(0.360*width, 0.932*height, 0.313*width)
 			if(pokemon.attacks[3])
 				pokemon.attack = pokemon.attacks[3]
 			break;
 	}
 
 	if(pokemon.attacks[0])
-		text(pokemon.attacks[0].name, 20, 310)
+		text(pokemon.attacks[0].name, 0.036*width, 0.837*height)
 	else
-		text("-", 20, 310)
+		text("-", 0.036*width, 0.837*height)
 	if(pokemon.attacks[1])
-		text(pokemon.attacks[1].name, 200, 310)
+		text(pokemon.attacks[1].name, 0.360*width, 0.837*height)
 	else
-		text("-", 200, 310)
+		text("-", 0.360*width, 0.837*height)
 	if(pokemon.attacks[2])
-		text(pokemon.attacks[2].name, 20, 345)
+		text(pokemon.attacks[2].name, 0.036*width, 0.932*height)
 	else
-		text("-", 20, 345)
+		text("-", 0.036*width, 0.932*height)
 	if(pokemon.attacks[3])
-		text(pokemon.attacks[3].name, 200, 345)
+		text(pokemon.attacks[3].name, 0.360*width, 0.932*height)
 	else
-		text("-", 200, 345)
+		text("-", 0.360*width, 0.932*height)
 
-	text("PP", 422, 310)
-	text(pokemon.attack.PP, textWidth(pokemon.attack.PP) + 468, 310)
-	text("/", 495, 310)
-	text(pokemon.attack.maxPP, 510 + textWidth(pokemon.attack.maxPP), 310)
-	text(pokemon.attack.type, 422, 345)
+	text("PP", 0.760*width, 0.837*height)
+	text(pokemon.attack.PP, textWidth(pokemon.attack.PP) + (0.843*width), 0.837*height)
+	text("/", 0.891*width, 0.837*height)
+	text(pokemon.attack.maxPP, (0.918*width) + textWidth(pokemon.attack.maxPP), 0.837*height)
+	text(pokemon.attack.type, 0.760*width, 0.932*height)
 	pop()
 }
