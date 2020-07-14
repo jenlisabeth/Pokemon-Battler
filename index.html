@@ -2,24 +2,35 @@
 <html>
   <head>
     <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
-    <style> body {padding: 0; margin: 0;} </style>
+    <style> 
+    @font-face {
+        font-family: pkNormalFont;
+        src: url(assets/pokemon_pixel_font.ttf);
+    }
+    @font-face {
+             font-family: pkThiccFont;
+            src: url(assets/pokemon_bold.otf);
+    }
+    body {padding: 0; margin: 0;}
+    </style>
     <script src="https://unpkg.com/pokeapi-js-wrapper/dist/index.js"></script>
     <script>const options = {
       protocol: 'https',
       hostName: 'pokeapi.co',
       versionPath: '/api/v2/',
       cache: true,
-      timeout: 10 * 1000 // 10s
+      timeout: 100 * 1000 // 1s
     }</script>
     <script> const P = new Pokedex.Pokedex(options); </script>
-    <script src="p5.min.js"></script>
-    <script src="box_methods.js"></script>
-    <script src="matter.min.js"></script>
-    <script src="/addons/p5.sound.js"></script>
-    <script src="/addons/p5.dom.js"></script>
-    <script src="pokemon.js"></script>
-    <script src="player.js"></script>
-    <script src="sketch.js"></script>
+    <script src="./scripts/p5.min.js"></script>
+    <script src="./scripts/box_methods.js"></script>
+    <script src="./scripts/matter.min.js"></script>
+    <script src="./addons/p5.sound.js"></script>
+    <script src="./addons/p5.dom.js"></script>
+    <script src="./scripts/pokemon.js"></script>
+    <script src="./scripts/player.js"></script>
+    <script src="./scripts/sketch.js"></script>
+
   </head>
   <body>
   </body>

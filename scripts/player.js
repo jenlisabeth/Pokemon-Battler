@@ -1,3 +1,5 @@
+/// <reference path="../references/p5.global-mode.d.ts" />
+
 class player {
 
 	constructor(iname) {

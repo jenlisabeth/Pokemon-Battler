@@ -1,3 +1,5 @@
+/// <reference path="../references/p5.global-mode.d.ts" />
+
 function BattleBox(pos, health, name, level, height = 0){
 	push()
 	translate(-32,-63)
@@ -26,33 +28,31 @@ function BattleBox(pos, health, name, level, height = 0){
 	fill(88,206,129)
 	rect(pos.x+122,pos.y+101,(111/100)*health,2)
 
-	if(fontIsLoaded)
-	{
-		textFont(pkNormalFont)
-		fill(0,0,0)
-		textSize(20)
-		text(name,pos.x+47,pos.y+90)
+	textFont("pkNormalFont")
+	fill(0,0,0)
+	textSize(20)
+	text(name,pos.x+47,pos.y+90)
 
-		textFont(pkThiccFont)
-		textSize(15)
-		text("L",pos.x+195,pos.y+87)
-		textSize(6)
-		textFont(pkNormalFont)
-		text("V",pos.x+203,pos.y+84)
-		textFont(pkThiccFont)
-		textSize(14)
-		text(":",pos.x+206,pos.y+87)
+	textFont("pkThiccFont")
+	textSize(15)
+	text("L",pos.x+195,pos.y+87)
+	textSize(6)
+	textFont("pkNormalFont")
+	text("V",pos.x+203,pos.y+84)
+	textFont("pkThiccFont")
+	textSize(14)
+	text(":",pos.x+206,pos.y+87)
 
-		textFont(pkNormalFont)
-		textSize(18)
-		text(level,pos.x+215,pos.y+87)
+	textFont("pkNormalFont")
+	textSize(18)
+	text(level,pos.x+215,pos.y+87)
 
-		fill(233,120,90)
-		textSize(13)
-		textFont(pkThiccFont)
-		text("H",pos.x+90,pos.y+108)
-		text("P",pos.x+102,pos.y+108)
-	}
+	fill(233,120,90)
+	textSize(13)
+	textFont("pkThiccFont")
+	text("H",pos.x+90,pos.y+108)
+	text("P",pos.x+102,pos.y+108)
+
 	pop()
 }
 

@@ -1,8 +1,10 @@
+/// <reference path="../references/p5.global-mode.d.ts" />
+
 new p5();
 
 var showFps = true;
 
-var pkNormalFont, pkThiccFont, fontIsLoaded, isReady = false;
+var isReady = false;
 
 var playerTurn = true;
 
@@ -33,16 +35,10 @@ async function preload(){
     	location.reload();
 	}, true);
 
-	pkNormalFont = await loadFont("assets/pokemon_pixel_font.ttf", fontLoaded)
-	pkThiccFont = await loadFont("assets/pokemon_bold.otf", fontLoaded)
 	var pokemons = await getPokedex();
 
 	await Trainer.init(pokemons, false);
 	await Enemy.init(pokemons, true);
-}
-
-function fontLoaded(){
-	fontIsLoaded = true
 }
 
 async function setup() {
@@ -115,9 +111,9 @@ function draw() {
 		fixedFps = fps;
 	}
 
-	if(fontIsLoaded && showFps){
+	if(showFps){
 		push()
-		textFont(pkNormalFont)
+		textFont("pkNormalFont")
 		fill(0,255,0)
 		stroke(0,0,0)
 		textSize(30)
@@ -209,22 +205,21 @@ function PlayerBattleBox(pos, pokemon){
 	rect(pos.x,pos.y+41,216,37)
 	rect(pos.x,pos.y+41,218,33)
 	BattleBox(pos, (100/pokemon.maxHealth)*pokemon.health, pokemon.name, pokemon.level, 16)
-	if(fontIsLoaded)
-	{
-		textFont(pkNormalFont)
-		fill(0,0,0)
-		textSize(18)
-		text("/",pos.x+163,pos.y+65)
-		text(int(pokemon.health), pos.x+135, pos.y+65)
-		text(pokemon.maxHealth, pos.x+175, pos.y+65)
+	
+	textFont("pkNormalFont")
+	fill(0,0,0)
+	textSize(18)
+	text("/",pos.x+163,pos.y+65)
+	text(int(pokemon.health), pos.x+135, pos.y+65)
+	text(pokemon.maxHealth, pos.x+175, pos.y+65)
 
-		fill(232,204,13)
-		textSize(9)
-		textFont(pkThiccFont)
-		text("E",pos.x+20,pos.y+81)
-		text("X",pos.x+28,pos.y+81)
-		text("P",pos.x+36,pos.y+81)
-	}
+	fill(232,204,13)
+	textSize(9)
+	textFont("pkThiccFont")
+	text("E",pos.x+20,pos.y+81)
+	text("X",pos.x+28,pos.y+81)
+	text("P",pos.x+36,pos.y+81)
+
 	fill(150,140,87)
 	rect(pos.x+52,pos.y+74,151,7)
 	fill(203,191,136)
@@ -239,56 +234,50 @@ function PlayerBattleBox(pos, pokemon){
 }
 
 function EndText(trainerName){
-	if(fontIsLoaded)
-	{
-		push()
-		textSize(35)
-		textFont(pkNormalFont)
-		strokeWeight(2)
-		stroke(34, 35, 85)
-		fill(34, 35, 85)
-		text(trainerName + " paid his loss.", 27, 312)
-		fill(255,255,255)
-		noStroke()
-		text(trainerName + " blacked out!", 25, 310)
-		text("!", textWidth(trainerName + " blacked out!") + 25,  345)
-		pop()
-	}
+	push()
+	textSize(35)
+	textFont("pkNormalFont")
+	strokeWeight(2)
+	stroke(34, 35, 85)
+	fill(34, 35, 85)
+	text(trainerName + " paid his loss.", 27, 312)
+	fill(255,255,255)
+	noStroke()
+	text(trainerName + " blacked out!", 25, 310)
+	text("!", textWidth(trainerName + " blacked out!") + 25,  345)
+	pop()
 }
 
 function BattleText(currPkmn, attackName){
-	if(fontIsLoaded)
+	push()
+	textSize(35)
+	textFont("pkNormalFont")
+	strokeWeight(2)
+	stroke(34, 35, 85)
+	fill(34, 35, 85)
+	if(currPkmn.isEnemy)
 	{
-		push()
-		textSize(35)
-		textFont(pkNormalFont)
-		strokeWeight(2)
-		stroke(34, 35, 85)
-		fill(34, 35, 85)
-		if(currPkmn.isEnemy)
-		{
-			text("Foe " + currPkmn.name + " used", 27, 312)
-			text(attackName, 27, 347)
-			text("!", textWidth(attackName) + 27,  347)
-			fill(255,255,255)
-			noStroke()
-			text("Foe " + currPkmn.name + " used", 25, 310)
-			text(attackName, 25, 345)
-			text("!", textWidth(attackName) + 25,  345)
-		}
-		else
-		{
-			text(currPkmn.name + " used", 27, 312)
-			text(attackName, 27, 347)
-			text("!", textWidth(attackName) + 27,  347)
-			fill(255,255,255)
-			noStroke()
-			text(currPkmn.name + " used", 25, 310)
-			text(attackName, 25, 345)
-			text("!", textWidth(attackName) + 25,  345)
-		}
-		pop()
+		text("Foe " + currPkmn.name + " used", 27, 312)
+		text(attackName, 27, 347)
+		text("!", textWidth(attackName) + 27,  347)
+		fill(255,255,255)
+		noStroke()
+		text("Foe " + currPkmn.name + " used", 25, 310)
+		text(attackName, 25, 345)
+		text("!", textWidth(attackName) + 25,  345)
 	}
+	else
+	{
+		text(currPkmn.name + " used", 27, 312)
+		text(attackName, 27, 347)
+		text("!", textWidth(attackName) + 27,  347)
+		fill(255,255,255)
+		noStroke()
+		text(currPkmn.name + " used", 25, 310)
+		text(attackName, 25, 345)
+		text("!", textWidth(attackName) + 25,  345)
+	}
+	pop()
 }
 
 function ChoiceBox(pokemon){
@@ -297,30 +286,27 @@ function ChoiceBox(pokemon){
 
 	push()
 	
-	if(fontIsLoaded)
-	{
-		textFont(pkNormalFont)
-		textSize(35)
-		strokeWeight(2)
-		stroke(34, 35, 85)
-		fill(34, 35, 85)
+	textFont("pkNormalFont")
+	textSize(35)
+	strokeWeight(2)
+	stroke(34, 35, 85)
+	fill(34, 35, 85)
 
-		text("What should", 27, 311)
-		text(pokemon.name + " do", 27, 346)
-		text("?", textWidth(pokemon.name + " do") + 27,  346)
-		fill(255,255,255)
-		noStroke()
-		text("What should", 25, 310)
-		text(pokemon.name + " do", 25, 345)
-		text("?", textWidth(pokemon.name + " do") + 25,  345)
+	text("What should", 27, 311)
+	text(pokemon.name + " do", 27, 346)
+	text("?", textWidth(pokemon.name + " do") + 27,  346)
+	fill(255,255,255)
+	noStroke()
+	text("What should", 25, 310)
+	text(pokemon.name + " do", 25, 345)
+	text("?", textWidth(pokemon.name + " do") + 25,  345)
 
-		fill(0,0,0)
-		textSize(32)
-		text("FIGHT", 322, 310)
-		text("BAG", 435, 310)
-		text("POKéMON", 322, 345)
-		text("RUN", 435, 345)
-	}
+	fill(0,0,0)
+	textSize(32)
+	text("FIGHT", 322, 310)
+	text("BAG", 435, 310)
+	text("POKéMON", 322, 345)
+	text("RUN", 435, 345)
 
 	switch(POSITION[pokemon.selected]){
 		case 'LT':
@@ -348,57 +334,54 @@ function BattleChoiceBox(pokemon){
 
 	push()
 	
-	if(fontIsLoaded)
-	{
-		textFont(pkNormalFont)
-		noStroke()
-		fill(0,0,0)
-		textSize(32)
-		switch(POSITION[pokemon.selected]){
-			case 'LT':
-				selectBox(20, 310, 174)
-				if(pokemon.attacks[0])
-					pokemon.attack = pokemon.attacks[0]
-				break;
-			case 'LB':
-				selectBox(20, 345, 174)
-				if(pokemon.attacks[2])
-					pokemon.attack = pokemon.attacks[2]
-				break;
-			case 'RT':
-				selectBox(200, 310, 174)
-				if(pokemon.attacks[1])
-					pokemon.attack = pokemon.attacks[1]
-				break;
-			case 'RB':
-				selectBox(200, 345, 174)
-				if(pokemon.attacks[3])
-					pokemon.attack = pokemon.attacks[3]
-				break;
-		}
-
-		if(pokemon.attacks[0])
-			text(pokemon.attacks[0].name, 20, 310)
-		else
-			text("-", 20, 310)
-		if(pokemon.attacks[1])
-			text(pokemon.attacks[1].name, 200, 310)
-		else
-			text("-", 200, 310)
-		if(pokemon.attacks[2])
-			text(pokemon.attacks[2].name, 20, 345)
-		else
-			text("-", 20, 345)
-		if(pokemon.attacks[3])
-			text(pokemon.attacks[3].name, 200, 345)
-		else
-			text("-", 200, 345)
-
-		text("PP", 422, 310)
-		text(pokemon.attack.PP, textWidth(pokemon.attack.PP) + 468, 310)
-		text("/", 495, 310)
-		text(pokemon.attack.maxPP, 510 + textWidth(pokemon.attack.maxPP), 310)
-		text(pokemon.attack.type, 422, 345)
+	textFont("pkNormalFont")
+	noStroke()
+	fill(0,0,0)
+	textSize(32)
+	switch(POSITION[pokemon.selected]){
+		case 'LT':
+			selectBox(20, 310, 174)
+			if(pokemon.attacks[0])
+				pokemon.attack = pokemon.attacks[0]
+			break;
+		case 'LB':
+			selectBox(20, 345, 174)
+			if(pokemon.attacks[2])
+				pokemon.attack = pokemon.attacks[2]
+			break;
+		case 'RT':
+			selectBox(200, 310, 174)
+			if(pokemon.attacks[1])
+				pokemon.attack = pokemon.attacks[1]
+			break;
+		case 'RB':
+			selectBox(200, 345, 174)
+			if(pokemon.attacks[3])
+				pokemon.attack = pokemon.attacks[3]
+			break;
 	}
+
+	if(pokemon.attacks[0])
+		text(pokemon.attacks[0].name, 20, 310)
+	else
+		text("-", 20, 310)
+	if(pokemon.attacks[1])
+		text(pokemon.attacks[1].name, 200, 310)
+	else
+		text("-", 200, 310)
+	if(pokemon.attacks[2])
+		text(pokemon.attacks[2].name, 20, 345)
+	else
+		text("-", 20, 345)
+	if(pokemon.attacks[3])
+		text(pokemon.attacks[3].name, 200, 345)
+	else
+		text("-", 200, 345)
+
+	text("PP", 422, 310)
+	text(pokemon.attack.PP, textWidth(pokemon.attack.PP) + 468, 310)
+	text("/", 495, 310)
+	text(pokemon.attack.maxPP, 510 + textWidth(pokemon.attack.maxPP), 310)
+	text(pokemon.attack.type, 422, 345)
 	pop()
 }

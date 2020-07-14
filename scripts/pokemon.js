@@ -1,3 +1,5 @@
+/// <reference path="../references/p5.global-mode.d.ts" />
+
 class pokemon {
 	constructor(iname) {
 		if(iname.toUpperCase().split('-').length < 3){
@@ -200,7 +202,7 @@ async function getPokemonDetails(iPokemon, isEnemy){
 	poke.id = pad(iPokemon.id,3)
 	poke.type = response.types[0].type.name
 
-	if(!isEnemy) poke.imageName = "https://projectpokemon.org/images/normal-back/" + name;
+	if(!isEnemy) poke.imageName = "https://projectpokemon.org/images/sprites-models/normal-back/" + name;
 	else poke.imageName = "https://projectpokemon.org/images/normal-sprite/" + name;
 
 	var attacks = await getPokemonAttacks(response.name);
