@@ -5,7 +5,7 @@ new p5();
 var touchEvent = null
 
 var canvas = null;
-var minCanvasWidth = 830;
+var minCanvasWidth = 555;
 
 var showFps = true;
 var isReady = false;
