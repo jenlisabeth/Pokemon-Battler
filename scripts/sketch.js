@@ -66,25 +66,7 @@ function keyPressed(){
 		Trainer.currentPokemon.move(keyCode);
 
 		if(keyCode === ENTER){
-			if (Trainer.currentPokemon.isChoosing){
-				if(POSITION[Trainer.currentPokemon.selected] === 'LT') {
-					Trainer.currentPokemon.isChoosing = false;
-					Trainer.currentPokemon.ChooseAttack = true;
-				}
-				if(POSITION[Trainer.currentPokemon.selected] === 'RB') {
-					Enemy.switchPokemon();
-				}
-			}else if (Trainer.currentPokemon.ChooseAttack){
-				if(Trainer.currentPokemon.attack.PP > 0){
-					Trainer.currentPokemon.attack.PP -= 1;
-					Trainer.currentPokemon.ChooseAttack = false;
-					Trainer.currentPokemon.isAttacking = true;
-				}
-			}else if (Trainer.currentPokemon.isAttacking){
-				Trainer.currentPokemon.isAttacking = false;
-				Trainer.currentPokemon.fight(Enemy.currentPokemon);
-				playerTurn = false;
-			}
+			UpdatePlayerChoice();
 		}
 
 		if(keyCode === ESCAPE){
@@ -98,14 +80,107 @@ function keyPressed(){
 		}
 	} else {
 		if(keyCode === ENTER || keyCode === ESCAPE){
-			if (Enemy.currentPokemon.isAttacking){
-				Enemy.currentPokemon.isAttacking = false;
-				Enemy.currentPokemon.isChoosing = true;
-				Trainer.currentPokemon.isChoosing = true;
-				Enemy.currentPokemon.fight(Trainer.currentPokemon);
-				playerTurn = true;
-			}
+			MakeEnemyAttack();
 		}
+	}
+}
+
+function mouseReleased() {
+	var mouseVector = new createVector(mouseX, mouseY);
+	if(playerTurn){
+		if(checkIfBoxClicked(mouseVector)) UpdatePlayerChoice();
+	} else {
+		MakeEnemyAttack();
+	}
+}
+
+function touchEnded(event) {
+	var touchVector = new createVector(event.changedTouches[0].x, event.changedTouches[0].y);
+	if(playerTurn){
+		if (checkIfBoxClicked(touchVector)) UpdatePlayerChoice();
+	} else {
+		MakeEnemyAttack();
+	}
+}
+
+function checkIfBoxClicked(pos){
+	if (Trainer.currentPokemon.isAttacking) return true;
+
+	if (Trainer.currentPokemon.isChoosing){
+		var boxX = 0.580*width;
+		var boxY = 0.837*height;
+		var boxW = 0.192*width;
+		var boxH = 0.086*height;
+	} else {
+		var boxX = 0.036*width;
+		var boxY = 0.837*height;
+		var boxW = 0.313*width;
+		var boxH = 0.086*height;
+	}
+
+	if (pos.x > boxX && pos.x < boxX+boxW &&
+		pos.y > boxY-boxH && pos.y < boxY) {
+		Trainer.currentPokemon.selected = 0;
+		if(Trainer.currentPokemon.attacks[0]) Trainer.currentPokemon.attack = Trainer.currentPokemon.attacks[0];
+		return true;
+	}
+
+	var boxY = 0.932*height;
+	if (pos.x > boxX && pos.x < boxX + boxW &&
+		pos.y > boxY - boxH && pos.y < boxY) {
+		Trainer.currentPokemon.selected = 2;
+		if(Trainer.currentPokemon.attacks[0]) Trainer.currentPokemon.attack = Trainer.currentPokemon.attacks[2];
+		return true;
+	}
+
+	var boxX = (Trainer.currentPokemon.isChoosing) ? 0.783*width : 0.360*width;
+	var boxY = 0.837*height;
+	if (pos.x > boxX && pos.x < boxX + boxW &&
+		pos.y > boxY - boxH && pos.y < boxY) {
+		Trainer.currentPokemon.selected = 1;
+		if(Trainer.currentPokemon.attacks[1]) Trainer.currentPokemon.attack = Trainer.currentPokemon.attacks[1];
+		return true;
+	}
+
+	var boxY = 0.932*height;
+	if (pos.x > boxX && pos.x < boxX + boxW &&
+		pos.y > boxY - boxH && pos.y < boxY) {
+		Trainer.currentPokemon.selected = 3;
+		if(Trainer.currentPokemon.attacks[3]) Trainer.currentPokemon.attack = Trainer.currentPokemon.attacks[3];
+		return true;
+	}
+	return false;
+}
+
+function UpdatePlayerChoice() {
+	if (Trainer.currentPokemon.isChoosing){
+		if(POSITION[Trainer.currentPokemon.selected] === 'LT') {
+			Trainer.currentPokemon.isChoosing = false;
+			Trainer.currentPokemon.ChooseAttack = true;
+		}
+		if(POSITION[Trainer.currentPokemon.selected] === 'RB') {
+			Enemy.switchPokemon();
+		}
+	}else if (Trainer.currentPokemon.ChooseAttack){
+		if(Trainer.currentPokemon.attack.PP > 0){
+			Trainer.currentPokemon.attack.PP -= 1;
+			Trainer.currentPokemon.ChooseAttack = false;
+			Trainer.currentPokemon.isAttacking = true;
+		}
+	}else if (Trainer.currentPokemon.isAttacking){
+		Trainer.currentPokemon.isAttacking = false;
+		Trainer.currentPokemon.fight(Enemy.currentPokemon);
+		playerTurn = false;
+	}
+}
+
+function MakeEnemyAttack(){
+	if (Enemy.currentPokemon.isAttacking){
+		Enemy.currentPokemon.isAttacking = false;
+		Enemy.currentPokemon.isChoosing = true;
+		Trainer.currentPokemon.isChoosing = true;
+		Enemy.currentPokemon.fight(Trainer.currentPokemon);
+		playerTurn = true;
 	}
 }
 
@@ -178,7 +253,7 @@ function draw() {
     	strokeWeight(0.007*width)
     	rect(0.007*width, 0.721*height, 0.987*width, 0.254*height, 0.018*width)
 
-		if(Trainer.currentPokemon.image.width > 0 && Enemy.currentPokemon.image.width > 0){
+		if(Trainer.currentPokemon.image.width > 0 && Enemy.currentPokemon.image.width > 0){ 
 	    	Trainer.currentPokemon.draw(0.261*width, 0.675*height, true)
 			Enemy.currentPokemon.draw(0.738*width, 0.405*height, true)
 		}else{
