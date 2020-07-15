@@ -59,9 +59,9 @@ class pokemon {
 				this.ratio = this.image.height / this.image.width;
 				this.updateImage();
 			}
-			var imgX = (posX - (this.image.width/2)) + (windowWidth - canvas.width) / 2
-			var imgY = (posY - this.image.height) + (windowHeight - height) / 2
-			this.image.position(imgX, imgY)		
+			var imgX = (posX - (this.image.width/2)) + (windowWidth - canvas.width) / 2;
+			var imgY = (posY - this.image.height) + (windowHeight - height) / 4;
+			this.image.position(imgX, imgY);
 		}
 	}
 

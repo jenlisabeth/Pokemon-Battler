@@ -2,7 +2,10 @@
 
 new p5();
 
+var touchEvent = null
+
 var canvas = null;
+var minCanvasWidth = 830;
 
 var showFps = true;
 var isReady = false;
@@ -42,20 +45,20 @@ async function preload(){
 }
 
 async function setup() {
-	var maxSize = windowWidth/2;
-	canvas = createCanvas(maxSize, (2/3) * maxSize);
+	var minSize = max(windowWidth/2, minCanvasWidth);
+	canvas = createCanvas(minSize, (2/3) * minSize);
 	var x = (windowWidth - width) / 2;
-  	var y = (windowHeight - height) / 2;
+  	var y = (windowHeight - height) / 4;
 	canvas.position(x, y, 'fixed');
 	frameRate(60);
 	smooth();
 }
 
 function windowResized() {
-	var maxSize = windowWidth/2;
-	resizeCanvas(maxSize, (2/3) * maxSize);
+	var minSize = max(windowWidth/2, minCanvasWidth);
+	resizeCanvas(minSize, (2/3) * minSize);
 	var x = (windowWidth - width) / 2;
-  	var y = (windowHeight - height) / 2;
+  	var y = (windowHeight - height) / 4;
 	canvas.position(x, y, 'fixed');
 	Trainer.currentPokemon.updateImage()
 	Enemy.currentPokemon.updateImage()
@@ -85,17 +88,20 @@ function keyPressed(){
 	}
 }
 
-function mouseReleased() {
-	var mouseVector = new createVector(mouseX, mouseY);
-	if(playerTurn){
-		if(checkIfBoxClicked(mouseVector)) UpdatePlayerChoice();
-	} else {
-		MakeEnemyAttack();
+function mousePressed() {
+	if (touchEvent == null) {
+		var mouseVector = new createVector(mouseX, mouseY);
+		if(playerTurn){
+			if(checkIfBoxClicked(mouseVector)) UpdatePlayerChoice();
+		} else {
+			MakeEnemyAttack();
+		}
 	}
 }
 
-function touchEnded(event) {
-	var touchVector = new createVector(event.changedTouches[0].x, event.changedTouches[0].y);
+function touchStarted(event) {
+	touchEvent = event
+	var touchVector = new createVector(touches[0].x, touches[0].y);
 	if(playerTurn){
 		if (checkIfBoxClicked(touchVector)) UpdatePlayerChoice();
 	} else {
